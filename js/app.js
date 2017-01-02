@@ -5,7 +5,7 @@ var Enemy = function(x, y) {
     this.y = y;
 
     // This speed of enemy object
-    this.speed = ((Math.random() * 200 )+10)
+    this.speed = ((Math.random() * 300 )+10)
 
     // The image/sprite for our enemies, this uses
     this.sprite = 'images/enemy-bug.png';
@@ -23,9 +23,47 @@ Enemy.prototype.update = function(dt) {
 
 };
 
+
+
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+//  Player of game 
+var Player = function(){
+    // Inital player positon is fixed to center
+    this.x = 202;
+    this.y = 400;
+
+    //The image/sprite of our player
+    this.sprite = 'images/char-boy.png';
+
+}
+
+// Draw the player on the screen
+Player.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y)
+}
+
+Player.prototype.update = function(dt){
+    // Not need now
+}
+
+// Handling Action on Player 
+Player.prototype.handleInput = function(keyCode){
+
+     if(keyCode == "left" && this.x > 10){
+        this.x -= 101;
+     }else if (keyCode == "right" && this.x < 400){
+        this.x += 101;
+     }else if (keyCode == "up" && this.y > 0){
+        this.y -= 81;
+     }else if (keyCode == "down" && this.y < 400){
+        this.y += 81;
+     }
+
 };
 
 
@@ -35,8 +73,7 @@ allEnemies.push(new Enemy(0,150));
 allEnemies.push(new Enemy(0,230));
 
 
-
-
+var player = new Player();
 
 
 // Now write your own player class
