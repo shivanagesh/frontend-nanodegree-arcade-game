@@ -32,12 +32,10 @@ Enemy.prototype.render = function() {
 
 // Check enemy collide with player 
 Enemy.prototype.checkCollision = function(player){
-    
      if(Math.abs(this.x - player.x) < 75 && Math.abs(this.y - player.y) < 60){
         alert("Oh Try again");
         player.reset();
      }   
-  
 }
 
 //  Player of game 
@@ -107,20 +105,29 @@ Timer.prototype.render = function(){
    ctx.font = "20px Arial";
    ctx.fillStyle = "red";
    ctx.fillText("Time remaining : "+this.timeRemaining, 10,80); 
+
 }
 
 // Timer tracking method
-Timer.prototype.update = function(player){
-   this.timeRemaining = 60 - (Math.floor((Date.now() - this.startTime) / 1000));
+Timer.prototype.update =  function(player){
+   this.timeRemaining = 10 - (Math.floor((Date.now() - this.startTime) / 1000));
    if(this.timeRemaining == 0){
           var  r = confirm("Your score is "+player.score+"\n Do you want to play again");
           if(r == true){
              this.startTime = Date.now();
              player.score = 0;
+             return true;
+          }else{
+             ctx.font = "40px Arial";
+             ctx.fillStyle = "black";
+             ctx.fillText(" Game over ", 200,200); 
+             return false;
           }
    }
+   else{
+    return true;
+   }
 }
-
 
 
 var allEnemies = [];

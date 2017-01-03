@@ -23,7 +23,7 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime, isContinue;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -33,12 +33,22 @@ var Engine = (function(global) {
      * and handles properly calling the update and render methods.
      */
     function main() {
+       
+        // Stop game is over
+        if(!isContinue){
+              ctx.font = "40px Arial";
+             ctx.fillStyle = "black";
+             ctx.fillText(" Game over ", 150,250); 
+            return;
+        }
+
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
          * instructions at different speeds we need a constant value that
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
+        
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
@@ -66,6 +76,7 @@ var Engine = (function(global) {
     function init() {
         reset();
         lastTime = Date.now();
+        isContinue = true;
         main();
     }
 
@@ -96,7 +107,7 @@ var Engine = (function(global) {
             enemy.checkCollision(player);
         });
         player.update();
-        timer.update(player);
+        isContinue = timer.update(player);
     }
 
     /* This function initially draws the "game level", it will then call
