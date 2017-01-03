@@ -35,17 +35,17 @@ Enemy.prototype.checkCollision = function(player){
     
      if(Math.abs(this.x - player.x) < 75 && Math.abs(this.y - player.y) < 60){
         alert("Oh Try again");
-        player.restart();
+        player.reset();
      }   
   
 }
-
 
 //  Player of game 
 var Player = function(){
     // Inital player positon is fixed to center
     this.x = 202;
     this.y = 400;
+    this.score = 0;
 
     //The image/sprite of our player
     this.sprite = 'images/char-boy.png';
@@ -54,18 +54,33 @@ var Player = function(){
 
 // Draw the player on the screen
 Player.prototype.render = function(){
+    // Player Image 
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y)
+
+    // Player Score
+   ctx.font = "20px Arial";
+   ctx.fillStyle = "red";
+   ctx.fillText("Score : "+this.score, 410,80); 
 }
 
 Player.prototype.update = function(dt){
-    // Not need now
+    //When player reched water, reset the player
+    if(this.y < 0) 
+    { 
+        this.score++;
+        this.reset(); 
+    }
 }
 
-Player.prototype.restart = function(){
+Player.prototype.reset = function(){
     this.x = 202;
     this.y = 400;
 }
 
+Player.prototype.restart = function(){
+    this.reset();
+    this.score = 0; 
+}
 // Handling Action on Player 
 Player.prototype.handleInput = function(keyCode){
 
@@ -81,14 +96,41 @@ Player.prototype.handleInput = function(keyCode){
 
 };
 
+// Timer for game
+var Timer = function(){
+    this.startTime = Date.now();
+    this.timeRemaining = 60;
+}
+
+Timer.prototype.render = function(){
+       // Player Score
+   ctx.font = "20px Arial";
+   ctx.fillStyle = "red";
+   ctx.fillText("Time remaining : "+this.timeRemaining, 10,80); 
+}
+
+// Timer tracking method
+Timer.prototype.update = function(player){
+   this.timeRemaining = 60 - (Math.floor((Date.now() - this.startTime) / 1000));
+   if(this.timeRemaining == 0){
+          var  r = confirm("Your score is "+player.score+"\n Do you want to play again");
+          if(r == true){
+             this.startTime = Date.now();
+             player.score = 0;
+          }
+   }
+}
+
+
 
 var allEnemies = [];
 allEnemies.push(new Enemy(0,60));
 allEnemies.push(new Enemy(0,150));
 allEnemies.push(new Enemy(0,230));
 
-
 var player = new Player();
+
+var timer = new Timer();
 
 
 // This listens for key presses and sends the keys to your

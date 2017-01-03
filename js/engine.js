@@ -96,6 +96,7 @@ var Engine = (function(global) {
             enemy.checkCollision(player);
         });
         player.update();
+        timer.update(player);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -153,6 +154,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        timer.render();
     }
 
     /* This function does nothing but it could have been a good place to
